@@ -5,6 +5,7 @@ const dotenv = require("dotenv").config({ path: ".env" });
 
 import path from "path";
 import textRoutes from "@infrastructure/routes/textRoutes";
+import blockRoutes from "@infrastructure/routes/blockRoutes";
 
 const app = express();
 
@@ -36,8 +37,11 @@ app.use(express.json());
 
 const port = process.env.PORT || 4000;
 
-// Логика для аутентификация
-app.use("/api/auth", textRoutes);
+// Логика для текста
+app.use("/api/text", textRoutes);
+
+// Логика для блоков
+app.use("/api/block", blockRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

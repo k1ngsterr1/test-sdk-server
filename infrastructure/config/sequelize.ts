@@ -1,3 +1,4 @@
+import { Block } from "@infrastructure/models/blockModel";
 import { Text } from "@infrastructure/models/textModel";
 import { Sequelize } from "sequelize-typescript";
 
@@ -12,7 +13,7 @@ const sequelize = new Sequelize({
   dialect: "postgres",
   storage: ":memory:",
   logging: false,
-  models: [Text],
+  models: [Text, Block],
 });
 
 export default sequelize;
