@@ -34,7 +34,7 @@ app.use(
 
 app.use(express.json());
 
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 
 // Логика для аутентификация
 app.use("/api/auth", textRoutes);

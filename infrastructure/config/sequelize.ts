@@ -4,11 +4,11 @@ import { Sequelize } from "sequelize-typescript";
 // Подключение к базе данных
 const sequelize = new Sequelize({
   repositoryMode: true,
-  database: process.env.DB_NAME,
-  host: process.env.DB_HOST,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  port: 5432,
+  database: "railway",
+  host: "monorail.proxy.rlwy.net",
+  username: "postgres",
+  password: "UVzoWeGKOuvOjvmhmCqidwsfeJOcOcWW",
+  port: 55276,
   dialect: "postgres",
   storage: ":memory:",
   logging: false,
