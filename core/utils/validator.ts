@@ -57,3 +57,29 @@ export async function validSize(size: string): Promise<boolean> {
   }
   return true;
 }
+
+export async function validLink(link: string): Promise<boolean> {
+  if (!link) {
+    return false;
+  }
+  if (
+    validator.isURL(link, {
+      protocols: ["https", "http"],
+      require_valid_protocol: true,
+      validate_length: true,
+      allow_underscores: false,
+      require_host: false,
+      require_tld: false,
+    })
+  ) {
+    return true;
+  }
+  if (validator.isEmail(link)) {
+    return true;
+  }
+  if (link.startsWith("#")) {
+    return true;
+  }
+  const pattern = /^\+?\d+(\s\d+)*$/;
+  return pattern.test(link);
+}

@@ -2,7 +2,7 @@ import { ITextRepository } from "@core/interfaces/ITextRepository";
 import { AddTextRequest } from "@core/utils/Text/Request";
 import { TextDetails } from "@core/utils/Text/types";
 import { ErrorDetails } from "@core/utils/utils";
-import { validColor, validSize, validURL } from "@core/utils/validator";
+import { validColor, validSize, validLink } from "@core/utils/validator";
 import { TextRepository } from "@infrastructure/repositories/textRepository";
 const Code: string = process.env.WEBSITE_CODE;
 
@@ -27,7 +27,7 @@ export default class AddText {
       }
     }
     if (request.link !== undefined) {
-      const isValidLink = await validURL(request.link);
+      const isValidLink = await validLink(request.link);
       if (!isValidLink) {
         errors.push(new ErrorDetails(400, "Invalid link."));
         return;
