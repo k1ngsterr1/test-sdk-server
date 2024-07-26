@@ -1,5 +1,6 @@
 import { ITextRepository } from "@core/interfaces/ITextRepository";
 import { UpdateTextRequest } from "@core/utils/Text/Request";
+import { LinkDetails } from "@core/utils/Text/types";
 import { ErrorDetails, nullifyObjectProperties } from "@core/utils/utils";
 import { validColor, validLink, validSize } from "@core/utils/validator";
 import { TextRepository } from "@infrastructure/repositories/textRepository";
@@ -7,9 +8,11 @@ const Code: string = process.env.WEBSITE_CODE;
 
 export default class UpdateText {
   private textRepository: ITextRepository;
+
   constructor() {
     this.textRepository = new TextRepository();
   }
+
   async execute(
     request: UpdateTextRequest,
     errors: ErrorDetails[]
@@ -23,6 +26,7 @@ export default class UpdateText {
       errors.push(new ErrorDetails(403, "The website code is incorrect."));
       return;
     }
+
     if (request.color !== undefined) {
       const isValidColor = await validColor(request.color);
       if (!isValidColor) {
@@ -30,6 +34,7 @@ export default class UpdateText {
         return;
       }
     }
+
     if (request.link !== undefined) {
       const isValidLink = await validLink(request.link);
       if (!isValidLink) {
@@ -37,6 +42,7 @@ export default class UpdateText {
         return;
       }
     }
+
     if (request.size !== undefined) {
       const isValidSize = await validSize(request.size);
       if (!isValidSize) {
@@ -47,45 +53,61 @@ export default class UpdateText {
 
     const text = await this.textRepository.findById(request.id, errors);
 
+    if (!text) {
+      errors.push(new ErrorDetails(404, "Text not found."));
+      return;
+    }
+
     if (request.content !== undefined) {
       text.content = request.content;
     }
+
     if (request.style !== undefined) {
       text.style = request.style;
     }
+
     if (request.font !== undefined) {
       text.font = request.font;
     }
+
     if (request.color !== undefined) {
       text.color = request.color;
     }
+
+    const newLink: LinkDetails = {
+      value: null,
+      email: null,
+      url: null,
+      phoneNumber: null,
+      subject: null,
+      anchor: null,
+      blank: null,
+    };
+
     if (request.link !== undefined) {
-      await nullifyObjectProperties(text.link);
-
       if (request.link.email !== undefined) {
-        text.link.email = request.link.email;
-        text.link.value = `mailto:${text.link.email}`;
-
-        if (request.link.subject !== undefined) {
-          text.link.value += `?subject=${encodeURIComponent(
-            text.link.subject
-          )}`;
-        }
+        newLink.email = request.link.email;
+        newLink.subject = request.link.subject;
+        newLink.value = `mailto:${newLink.email}?subject=${encodeURIComponent(
+          newLink.subject
+        )}`;
       }
       if (request.link.url !== undefined) {
-        text.link.url = request.link.url;
-        text.link.value = request.link.url;
+        newLink.url = request.link.url;
+        newLink.value = request.link.url;
 
         if (request.link.anchor !== undefined) {
-          text.link.anchor = request.link.anchor;
-          text.link.value += `#${encodeURIComponent(text.link.anchor)}`;
+          newLink.anchor = request.link.anchor;
+          newLink.value += `#${encodeURIComponent(newLink.anchor)}`;
         }
       }
       if (request.link.phoneNumber !== undefined) {
-        text.link.phoneNumber = request.link.phoneNumber;
-        text.link.value = text.link.phoneNumber;
+        newLink.phoneNumber = request.link.phoneNumber;
+        newLink.value = newLink.phoneNumber;
       }
+      text.link = newLink;
     }
+
     if (request.size !== undefined) {
       text.size = request.size;
     }
