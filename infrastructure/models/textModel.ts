@@ -34,12 +34,16 @@ export class Text extends Model<TextAttributes> {
   @Column(DataType.STRING)
   color!: string;
 
-  @Column(DataType.STRING)
-  link!: string;
-
-  @Default(false)
-  @Column(DataType.BOOLEAN)
-  blank!: boolean;
+  @Column(DataType.JSON)
+  link!: {
+    value: string;
+    email: string;
+    url: string;
+    phoneNumber: string;
+    subject: string;
+    anchor: string;
+    blank: boolean;
+  };
 
   @Default("24px")
   @Column(DataType.STRING)

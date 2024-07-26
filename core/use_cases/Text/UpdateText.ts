@@ -1,6 +1,6 @@
 import { ITextRepository } from "@core/interfaces/ITextRepository";
 import { UpdateTextRequest } from "@core/utils/Text/Request";
-import { ErrorDetails } from "@core/utils/utils";
+import { ErrorDetails, nullifyObjectProperties } from "@core/utils/utils";
 import { validColor, validLink, validSize } from "@core/utils/validator";
 import { TextRepository } from "@infrastructure/repositories/textRepository";
 const Code: string = process.env.WEBSITE_CODE;
@@ -60,7 +60,31 @@ export default class UpdateText {
       text.color = request.color;
     }
     if (request.link !== undefined) {
-      text.link = request.link;
+      await nullifyObjectProperties(text.link);
+
+      if (request.link.email !== undefined) {
+        text.link.email = request.link.email;
+        text.link.value = `mailto:${text.link.email}`;
+
+        if (request.link.subject !== undefined) {
+          text.link.value += `?subject=${encodeURIComponent(
+            text.link.subject
+          )}`;
+        }
+      }
+      if (request.link.url !== undefined) {
+        text.link.url = request.link.url;
+        text.link.value = request.link.url;
+
+        if (request.link.anchor !== undefined) {
+          text.link.anchor = request.link.anchor;
+          text.link.value += `#${encodeURIComponent(text.link.anchor)}`;
+        }
+      }
+      if (request.link.phoneNumber !== undefined) {
+        text.link.phoneNumber = request.link.phoneNumber;
+        text.link.value = text.link.phoneNumber;
+      }
     }
     if (request.size !== undefined) {
       text.size = request.size;

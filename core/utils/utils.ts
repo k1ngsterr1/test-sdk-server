@@ -24,3 +24,9 @@ export class ElementDetails {
     this.headers = headers;
   }
 }
+
+export const nullifyObjectProperties = async (obj: any) => {
+  Object.keys(obj).forEach((key) => {
+    obj[key] = null;
+  });
+};
