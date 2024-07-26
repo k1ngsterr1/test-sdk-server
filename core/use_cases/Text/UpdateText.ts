@@ -48,22 +48,22 @@ export default class UpdateText {
     const text = await this.textRepository.findById(request.id, errors);
 
     if (request.content !== undefined) {
-      request.content = text.content;
+      text.content = request.content;
     }
     if (request.style !== undefined) {
-      request.style = text.style;
+      text.style = request.style;
     }
     if (request.font !== undefined) {
-      request.font = text.font;
+      text.font = request.font;
     }
     if (request.color !== undefined) {
-      request.color = text.color;
+      text.color = request.color;
     }
     if (request.link !== undefined) {
-      request.link = text.link;
+      text.link = request.link;
     }
     if (request.size !== undefined) {
-      request.size = text.size;
+      text.size = request.size;
     }
 
     await text.save();
