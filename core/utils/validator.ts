@@ -1,4 +1,5 @@
 import validator from "validator";
+import { LinkDetails } from "./Text/types";
 
 export async function validColor(value: string): Promise<boolean> {
   const errors = [];
@@ -58,16 +59,12 @@ export async function validSize(size: string): Promise<boolean> {
   return true;
 }
 
-export async function validLink(link: {
-  value: string;
-  email: string;
-  url: string;
-  phoneNumber: string;
-  subject: string;
-  anchor: string;
-  blank: boolean;
-}): Promise<boolean> {
-  if (link.email !== undefined && link.url !== undefined) {
+export async function validLink(link: LinkDetails): Promise<boolean> {
+  if (
+    link.email !== undefined &&
+    link.url !== undefined &&
+    link.phoneNumber !== undefined
+  ) {
     return false;
   }
   if (
@@ -84,6 +81,9 @@ export async function validLink(link: {
     return true;
   }
   if (link.email !== undefined && validator.isEmail(link.email)) {
+    if (link.subject === undefined) {
+      return false;
+    }
     return true;
   }
   const pattern = /^\+?\d+(\s\d+)*$/;

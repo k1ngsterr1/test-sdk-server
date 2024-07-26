@@ -1,6 +1,6 @@
 import { ITextRepository } from "@core/interfaces/ITextRepository";
 import { AddTextRequest } from "@core/utils/Text/Request";
-import { TextDetails } from "@core/utils/Text/types";
+import { LinkDetails, TextDetails } from "@core/utils/Text/types";
 import { ErrorDetails } from "@core/utils/utils";
 import { validColor, validSize, validLink } from "@core/utils/validator";
 import { TextRepository } from "@infrastructure/repositories/textRepository";
@@ -50,7 +50,15 @@ export default class AddText {
 
       color: request.color,
 
-      link: request.link,
+      link: {
+        value: request.link.value || null,
+        email: request.link.email || null,
+        url: request.link.url || null,
+        phoneNumber: request.link.phoneNumber || null,
+        subject: request.link.subject || null,
+        anchor: request.link.anchor || null,
+        blank: request.link.blank || null,
+      },
 
       size: request.size,
     };
