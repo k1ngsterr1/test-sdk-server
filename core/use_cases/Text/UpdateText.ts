@@ -98,7 +98,7 @@ export default class UpdateText {
 
         if (request.link.anchor !== undefined) {
           newLink.anchor = request.link.anchor;
-          newLink.value += `#${encodeURIComponent(newLink.anchor)}`;
+          newLink.value += `${encodeURIComponent(newLink.anchor)}`;
         }
       }
       if (request.link.phoneNumber !== undefined) {
