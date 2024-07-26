@@ -1,7 +1,8 @@
 export type BlockAttributes = {
-    id: number;
-	name: string;
-}
+  id: number;
+  name: string;
+};
 export type BlockDetails = {
-    name: string;
-}
+  name: string;
+  anchor: string;
+};

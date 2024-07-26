@@ -58,12 +58,21 @@ export async function validSize(size: string): Promise<boolean> {
   return true;
 }
 
-export async function validLink(link: string): Promise<boolean> {
-  if (!link) {
+export async function validLink(link: {
+  value: string;
+  email: string;
+  url: string;
+  phoneNumber: string;
+  subject: string;
+  anchor: string;
+  blank: boolean;
+}): Promise<boolean> {
+  if (link.email !== undefined && link.url !== undefined) {
     return false;
   }
   if (
-    validator.isURL(link, {
+    link.url !== undefined &&
+    validator.isURL(link.url, {
       protocols: ["https", "http"],
       require_valid_protocol: true,
       validate_length: true,
@@ -74,12 +83,11 @@ export async function validLink(link: string): Promise<boolean> {
   ) {
     return true;
   }
-  if (validator.isEmail(link)) {
-    return true;
-  }
-  if (link.startsWith("#")) {
+  if (link.email !== undefined && validator.isEmail(link.email)) {
     return true;
   }
   const pattern = /^\+?\d+(\s\d+)*$/;
-  return pattern.test(link);
+  if (link.phoneNumber !== undefined && pattern.test(link.phoneNumber)) {
+    return true;
+  }
 }
