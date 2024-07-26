@@ -2,34 +2,59 @@ import { ITextRepository } from "@core/interfaces/ITextRepository";
 import { AddTextRequest } from "@core/utils/Text/Request";
 import { TextDetails } from "@core/utils/Text/types";
 import { ErrorDetails } from "@core/utils/utils";
+import { validColor, validSize, validURL } from "@core/utils/validator";
 import { TextRepository } from "@infrastructure/repositories/textRepository";
 const Code: string = process.env.WEBSITE_CODE;
 
-export default class AddText{
-    private textRepository: ITextRepository;
-    constructor(){
-        this.textRepository = new TextRepository();
+export default class AddText {
+  private textRepository: ITextRepository;
+  constructor() {
+    this.textRepository = new TextRepository();
+  }
+  async execute(
+    request: AddTextRequest,
+    errors: ErrorDetails[]
+  ): Promise<void> {
+    if (request.code !== Code) {
+      errors.push(new ErrorDetails(403, "The website code is incorrect."));
+      return;
     }
-    async execute(request: AddTextRequest, errors: ErrorDetails[]): Promise<void> {
-        if(request.code !== Code){
-            errors.push(new ErrorDetails(403, "The website code is incorrect."));
-            return;
-        }
-
-        const newText: TextDetails = {
-            content: request.content,
-
-			style: request.style,
-
-			font: request.font,
-
-			color: request.color,
-
-			link: request.link,
-
-			size: request.size,
-        }
-
-        await this.textRepository.create(newText, errors);
+    if (request.color !== undefined) {
+      const isValidColor = await validColor(request.color);
+      if (!isValidColor) {
+        errors.push(new ErrorDetails(400, "Invalid color."));
+        return;
+      }
     }
+    if (request.link !== undefined) {
+      const isValidLink = await validURL(request.link);
+      if (!isValidLink) {
+        errors.push(new ErrorDetails(400, "Invalid link."));
+        return;
+      }
+    }
+    if (request.size !== undefined) {
+      const isValidSize = await validSize(request.size);
+      if (!isValidSize) {
+        errors.push(new ErrorDetails(400, "Invalid size."));
+        return;
+      }
+    }
+
+    const newText: TextDetails = {
+      content: request.content,
+
+      style: request.style,
+
+      font: request.font,
+
+      color: request.color,
+
+      link: request.link,
+
+      size: request.size,
+    };
+
+    await this.textRepository.create(newText, errors);
+  }
 }
