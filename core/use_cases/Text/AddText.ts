@@ -1,6 +1,6 @@
 import { ITextRepository } from "@core/interfaces/ITextRepository";
 import { AddTextRequest } from "@core/utils/Text/Request";
-import { LinkDetails, TextDetails } from "@core/utils/Text/types";
+import { TextDetails } from "@core/utils/Text/types";
 import { ErrorDetails } from "@core/utils/utils";
 import { validColor, validSize, validLink } from "@core/utils/validator";
 import { TextRepository } from "@infrastructure/repositories/textRepository";
@@ -61,6 +61,8 @@ export default class AddText {
       },
 
       size: request.size,
+
+      width: request.width,
     };
 
     await this.textRepository.create(newText, errors);

@@ -31,6 +31,7 @@ class TextController {
         color: req.body.color,
         link: req.body.link,
         size: req.body.size,
+        width: req.body.width,
       };
 
       await this.addTextUseCase.execute(request, errors);
@@ -95,6 +96,7 @@ class TextController {
         color: req.body.color,
         link: req.body.link,
         size: req.body.size,
+        width: req.body.width,
       };
 
       await this.updateTextUseCase.execute(request, errors);

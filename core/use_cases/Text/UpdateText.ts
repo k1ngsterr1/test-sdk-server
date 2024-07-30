@@ -112,6 +112,10 @@ export default class UpdateText {
       text.size = request.size;
     }
 
+    if (request.width !== undefined) {
+      text.width = request.width;
+    }
+
     await text.save();
   }
 }

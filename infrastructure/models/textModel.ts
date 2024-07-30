@@ -4,8 +4,6 @@ import {
   Column,
   Model,
   DataType,
-  CreatedAt,
-  UpdatedAt,
   AutoIncrement,
   PrimaryKey,
   Default,
@@ -44,6 +42,9 @@ export class Text extends Model<TextAttributes> {
     anchor: string;
     blank: boolean;
   };
+
+  @Column(DataType.INTEGER)
+  width: number;
 
   @Default("24px")
   @Column(DataType.STRING)
