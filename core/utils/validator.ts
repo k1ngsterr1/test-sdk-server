@@ -60,6 +60,9 @@ export async function validSize(size: string): Promise<boolean> {
 }
 
 export async function validLink(link: LinkDetails): Promise<boolean> {
+  if (link.value !== undefined) {
+    return true;
+  }
   if (
     link.email !== undefined &&
     link.url !== undefined &&

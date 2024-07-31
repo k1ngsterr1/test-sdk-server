@@ -35,7 +35,7 @@ app.use(
 
 app.use(express.json());
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4001;
 
 // Логика для текста
 app.use("/api/text", textRoutes);
