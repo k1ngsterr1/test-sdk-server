@@ -85,14 +85,15 @@ export default class UpdateText {
     };
 
     if (request.link !== undefined) {
-      if (request.link.email !== undefined) {
+      if (request.link.value !== undefined) {
+        newLink.value = request.link.value;
+      } else if (request.link.email !== undefined) {
         newLink.email = request.link.email;
         newLink.subject = request.link.subject;
         newLink.value = `mailto:${newLink.email}?subject=${encodeURIComponent(
           newLink.subject
         )}`;
-      }
-      if (request.link.url !== undefined) {
+      } else if (request.link.url !== undefined) {
         newLink.url = request.link.url;
         newLink.value = request.link.url;
 
@@ -100,8 +101,11 @@ export default class UpdateText {
           newLink.anchor = request.link.anchor;
           newLink.value += `${encodeURIComponent(newLink.anchor)}`;
         }
-      }
-      if (request.link.phoneNumber !== undefined) {
+
+        if (request.link.blank !== undefined) {
+          newLink.blank = request.link.blank;
+        }
+      } else if (request.link.phoneNumber !== undefined) {
         newLink.phoneNumber = request.link.phoneNumber;
         newLink.value = newLink.phoneNumber;
       }
