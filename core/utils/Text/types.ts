@@ -16,6 +16,7 @@ export type TextAttributes = {
   color: string;
   link: LinkDetails;
   size: string;
+  width: number;
 };
 
 export type TextDetails = {
@@ -25,4 +26,5 @@ export type TextDetails = {
   color: string;
   link: LinkDetails;
   size: string;
+  width: number;
 };
