@@ -61,6 +61,7 @@ export async function validSize(size: string): Promise<boolean> {
 
 export async function validLink(link: LinkDetails): Promise<boolean> {
   if (link.value !== undefined) {
+    console.log("wtf");
     return true;
   }
   if (
@@ -74,13 +75,14 @@ export async function validLink(link: LinkDetails): Promise<boolean> {
     link.url !== undefined &&
     validator.isURL(link.url, {
       protocols: ["https", "http"],
-      require_valid_protocol: true,
+      require_valid_protocol: false,
       validate_length: true,
       allow_underscores: false,
-      require_host: false,
-      require_tld: false,
+      require_host: true,
+      require_tld: true,
     })
   ) {
+    console.log("url wtf");
     return true;
   }
   if (link.email !== undefined && validator.isEmail(link.email)) {
