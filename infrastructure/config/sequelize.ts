@@ -1,4 +1,3 @@
-import { Image } from "@infrastructure/models/imageModel";
 import { Block } from "@infrastructure/models/blockModel";
 import { Text } from "@infrastructure/models/textModel";
 import { Sequelize } from "sequelize-typescript";
@@ -14,7 +13,7 @@ const sequelize = new Sequelize({
   dialect: "postgres",
   storage: ":memory:",
   logging: false,
-  models: [Text, Block, Image],
+  models: [Text, Block],
 });
 
 export default sequelize;
