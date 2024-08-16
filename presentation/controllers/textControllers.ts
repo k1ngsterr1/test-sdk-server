@@ -34,8 +34,11 @@ class TextController {
         width: req.body.width,
       };
 
-      if (req.body.image !== undefined) {
-        request.link.value = req.body.image;
+      if (typeof req.body.image !== undefined) {
+        request.link = {
+          ...request.link,
+          value: req.body.image,
+        };
       }
 
       await this.addTextUseCase.execute(request, errors);
@@ -103,8 +106,11 @@ class TextController {
         width: req.body.width,
       };
 
-      if (req.body.image !== undefined) {
-        request.link.value = req.body.image;
+      if (typeof req.body.image !== undefined) {
+        request.link = {
+          ...request.link,
+          value: req.body.image,
+        };
       }
 
       await this.updateTextUseCase.execute(request, errors);
