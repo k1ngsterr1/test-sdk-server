@@ -61,7 +61,6 @@ export async function validSize(size: string): Promise<boolean> {
 
 export async function validLink(link: LinkDetails): Promise<boolean> {
   if (link.value !== undefined) {
-    console.log("wtf");
     return true;
   }
   if (
@@ -95,4 +94,5 @@ export async function validLink(link: LinkDetails): Promise<boolean> {
   if (link.phoneNumber !== undefined && pattern.test(link.phoneNumber)) {
     return true;
   }
+  return false;
 }

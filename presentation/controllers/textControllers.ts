@@ -36,7 +36,7 @@ class TextController {
         width: req.body.width,
       };
 
-      if (typeof req.body.image !== undefined) {
+      if (req.body.image !== undefined) {
         request.link = {
           ...request.link,
           value: req.body.image,
@@ -47,9 +47,7 @@ class TextController {
 
       if (errors.length > 0) {
         try {
-          unlink(uploadPath + "uploads", () => {
-            console.log("No image");
-          });
+          unlink(uploadPath + "uploads", () => {});
         } finally {
           return res
             .status(errors[0].code)
@@ -60,9 +58,7 @@ class TextController {
       res.status(201).json({ message: "Added text succesfully" });
     } catch (error) {
       try {
-        unlink(uploadPath + "uploads", () => {
-          console.log("Deleted image");
-        });
+        unlink(uploadPath + "uploads", () => {});
       } finally {
         res.status(500).json({ message: "Error adding the text." });
       }
@@ -121,7 +117,7 @@ class TextController {
         width: req.body.width,
       };
 
-      if (typeof req.body.image !== undefined) {
+      if (req.body.image !== undefined) {
         request.link = {
           ...request.link,
           value: req.body.image,
@@ -132,9 +128,7 @@ class TextController {
 
       if (errors.length > 0) {
         try {
-          unlink(uploadPath + "uploads", () => {
-            console.log("Deleted image");
-          });
+          unlink(uploadPath + "uploads", () => {});
         } finally {
           return res
             .status(errors[0].code)
@@ -145,9 +139,7 @@ class TextController {
       res.status(200).json({ message: "Updated text succesfully" });
     } catch (error) {
       try {
-        unlink(uploadPath + "uploads", () => {
-          console.log("No image");
-        });
+        unlink(uploadPath + "uploads", () => {});
       } finally {
         res.status(500).json({ message: "Error adding the text." });
       }
