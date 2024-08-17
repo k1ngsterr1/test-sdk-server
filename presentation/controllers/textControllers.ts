@@ -2,6 +2,7 @@ import AddText from "@core/use_cases/Text/AddText";
 import DeleteText from "@core/use_cases/Text/DeleteText";
 import GetTexts from "@core/use_cases/Text/GetTexts";
 import UpdateText from "@core/use_cases/Text/UpdateText";
+import { unlink } from "fs";
 import {
   AddTextRequest,
   DeleteTextRequest,
@@ -9,6 +10,7 @@ import {
 } from "@core/utils/Text/Request";
 import { ErrorDetails } from "@core/utils/utils";
 import { Request, Response } from "express";
+import { uploadPath } from "server";
 class TextController {
   private addTextUseCase: AddText;
   private getTextsUseCase: GetTexts;
@@ -34,7 +36,7 @@ class TextController {
         width: req.body.width,
       };
 
-      if (typeof req.body.image !== undefined) {
+      if (req.body.image !== undefined) {
         request.link = {
           ...request.link,
           value: req.body.image,
@@ -44,13 +46,22 @@ class TextController {
       await this.addTextUseCase.execute(request, errors);
 
       if (errors.length > 0) {
-        return res.status(errors[0].code).json({ message: errors[0].details });
+        try {
+          unlink(uploadPath + "uploads", () => {});
+        } finally {
+          return res
+            .status(errors[0].code)
+            .json({ message: errors[0].details });
+        }
       }
 
       res.status(201).json({ message: "Added text succesfully" });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error adding the text." });
+      try {
+        unlink(uploadPath + "uploads", () => {});
+      } finally {
+        res.status(500).json({ message: "Error adding the text." });
+      }
     }
   }
 
@@ -106,7 +117,7 @@ class TextController {
         width: req.body.width,
       };
 
-      if (typeof req.body.image !== undefined) {
+      if (req.body.image !== undefined) {
         request.link = {
           ...request.link,
           value: req.body.image,
@@ -116,13 +127,22 @@ class TextController {
       await this.updateTextUseCase.execute(request, errors);
 
       if (errors.length > 0) {
-        return res.status(errors[0].code).json({ message: errors[0].details });
+        try {
+          unlink(uploadPath + "uploads", () => {});
+        } finally {
+          return res
+            .status(errors[0].code)
+            .json({ message: errors[0].details });
+        }
       }
 
       res.status(200).json({ message: "Updated text succesfully" });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error updateing the text." });
+      try {
+        unlink(uploadPath + "uploads", () => {});
+      } finally {
+        res.status(500).json({ message: "Error adding the text." });
+      }
     }
   }
 }

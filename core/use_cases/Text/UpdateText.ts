@@ -36,7 +36,9 @@ export default class UpdateText {
     }
 
     if (request.link !== undefined) {
+      console.log(request.link);
       const isValidLink = await validLink(request.link);
+      console.log(isValidLink);
       if (!isValidLink) {
         errors.push(new ErrorDetails(400, "Invalid link."));
         return;
